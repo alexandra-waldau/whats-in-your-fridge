@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './search.css';
+import Recipes from './recipes.js';
 
 class Search extends Component {
     //assigns initial state
@@ -9,7 +10,8 @@ class Search extends Component {
         this.state = { 
             //properties of state object
             inputValue: "",
-            ingredients: []
+            ingredients: [],
+            recipesVisible: false
         };
     }
 
@@ -20,13 +22,26 @@ class Search extends Component {
         });
     }
 
+    deleteIngredient(id) {
+        let ingredients = [...this.state.ingredients];
+        
+        ingredients = ingredients.filter(ingredient => ingredient.id !== id);
+
+        this.setState({
+            ingredients
+        });
+    }
+
     addIngredient() {
-        //remove whitespace
-        const input = this.state.inputValue.slice();
-        const ingredients = [...this.state.ingredients];
+        const newIngredient = {
+            id: 1 + Math.random(),
+            value: this.state.inputValue.slice()
+        }
+        //copy array
+        let ingredients = [...this.state.ingredients];
 
         //add ingredient to existing array
-        ingredients.push(input);
+        ingredients.push(newIngredient);
 
         //reset state
         this.setState ({
@@ -35,8 +50,15 @@ class Search extends Component {
         });
     }
 
+    search() {
+        //command to re-render
+        this.setState ({
+            recipesVisible: true
+        });
+    }
+
     //provide event listeners when DOM is rendered
-    //return = display
+    //return stops execution and returns value from function
 
     render() { 
         return ( 
@@ -48,14 +70,18 @@ class Search extends Component {
                     value = {this.state.inputValue}
                     onChange = {event => this.updateInput("inputValue", event.target.value)}
                 />
-                <button onClick={()=> this.addIngredient()}>+</button>
-                <ul>
+                <button id="add-button" onClick={()=> this.addIngredient()}>+</button>
+                <ul className="ingredient list">
                     {this.state.ingredients.map(ingredient => {
                         return (
-                        <li>{ingredient}</li>
+                        <li key={ingredient.id}>{ingredient.value}
+                            <button id="delete-button" onClick={() => this.deleteIngredient(ingredient.id)}>x</button>
+                        </li>
                         );
                     })}
                 </ul>
+                <button id="search-button" onClick={() => this.search()}>Find recipes</button>
+                <div className="recipes">{this.state.recipesVisible ? <Recipes data = {this.state.ingredients}/> : null}</div>
             </div>
         );
     }

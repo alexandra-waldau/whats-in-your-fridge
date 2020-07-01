@@ -2,8 +2,34 @@
     height: 35px;
     width: 400px;
     border-radius: 20px;
+    margin-right: 10px;
 }
 
 .input-field:focus {
     outline: none;
+}
+
+.list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+}
+
+.list li {
+    border-radius: 25px;
+    background-color :gray;
+    padding: 5px 20px;
+    padding-right: 0;
+    margin-right: 10px;
+}
+
+#delete-button {
+    margin-left: 5px;
+    margin-right: 10px;
+    background-color:gray;
+    border-style: none;
+    color: white;
+    text-align: center;
 }
