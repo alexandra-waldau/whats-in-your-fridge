@@ -11,7 +11,8 @@ class Search extends Component {
             //properties of state object
             inputValue: "",
             ingredients: [],
-            recipesVisible: false
+            recipesVisible: false,
+            refreshRecipes: false
         };
     }
 
@@ -51,10 +52,17 @@ class Search extends Component {
     }
 
     search() {
-        //command to re-render
-        this.setState ({
-            recipesVisible: true
-        });
+        //triggers rendering based on click of search button
+        if (this.state.recipesVisible) {
+            this.setState ({
+                refreshRecipes: !this.state.refreshRecipes
+            })
+        }
+        else {
+            this.setState ({
+                recipesVisible: true
+            });
+        }
     }
 
     //provide event listeners when DOM is rendered
@@ -81,7 +89,8 @@ class Search extends Component {
                     })}
                 </ul>
                 <button id="search-button" onClick={() => this.search()}>Find recipes</button>
-                <div className="recipes">{this.state.recipesVisible ? <Recipes data = {this.state.ingredients}/> : null}</div>
+                <div className="recipes">{this.state.recipesVisible ? <Recipes data = {this.state.ingredients} 
+                refresh = {this.state.refreshRecipes}/> : null}</div>
             </div>
         );
     }

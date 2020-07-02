@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import './recipes.css';
+import { Link } from 'react-router-dom';
 
 class Recipes extends Component {
     constructor(props) {
@@ -6,15 +8,19 @@ class Recipes extends Component {
 
         this.state = {
             recipes: [],
-            url: ""
         };
     }
 
     //lifecycle method
     //invoked after component is inserted into component tree
     componentDidMount() {
-        console.log("worked");
-        this.getRequestURL();
+        this.fetchRecipes(this.getRequestURL());
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.refresh!== prevProps.refresh) {
+            this.fetchRecipes(this.getRequestURL());
+        }
     }
 
     getRequestURL() {
@@ -32,16 +38,38 @@ class Recipes extends Component {
                 requestURL += ingredient.value;
             } 
         });
-        
-        this.setState ({
-            url: requestURL
-        });
+
+        requestURL += "&number=50";
+        return requestURL;
+    }
+
+    fetchRecipes(url) {
+        fetch(url)
+            .then(result => {
+                return result.json()
+            }).then(data => {
+                this.setState ({
+                    recipes: data
+                })
+            });       
+    }
+
+    returnRecipe(id) {
+        window.location.href="/recipe/${id}"
     }
 
     render() { 
         return ( 
-        <div>{this.state.url}</div>
-         );
+        <div className="recipes container">{this.state.recipes.map(recipe => {
+            return (
+            <div className="recipe" key={recipe.id}>
+                <Link to={"/recipe/" + recipe.id}>View recipe</Link>
+                <img src={recipe.image}/>
+                <h2>{recipe.title}</h2>
+            </div>
+            )})
+        }</div>
+    );
     }
 }
  
