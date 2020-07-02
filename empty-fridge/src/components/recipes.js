@@ -54,16 +54,12 @@ class Recipes extends Component {
             });       
     }
 
-    returnRecipe(id) {
-        window.location.href="/recipe/${id}"
-    }
-
     render() { 
         return ( 
         <div className="recipes container">{this.state.recipes.map(recipe => {
             return (
             <div className="recipe" key={recipe.id}>
-                <Link to={"/recipe/" + recipe.id}>View recipe</Link>
+                <Link to={{ pathname: "/recipe/" + recipe.id, state: recipe.missedIngredients}}>View recipe</Link>
                 <img src={recipe.image}/>
                 <h2>{recipe.title}</h2>
             </div>

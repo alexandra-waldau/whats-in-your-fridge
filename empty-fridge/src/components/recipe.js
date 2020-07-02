@@ -1,9 +1,23 @@
 import React, { Component } from 'react';
 
 class Recipe extends Component {
-    state = {  }
+    state = {  
+        missedIngredients: []
+    }
+
+    componentDidMount() {
+        this.setState ({
+            missedIngredients: this.props.location.state
+        })
+    }
+
     render() { 
-    return ( <div><p>{this.props.match.params.id}</p></div> );
+    return ( 
+            <div>{this.state.missedIngredients.map(ingredient => {
+                return(<p>{ingredient.name}</p>);
+                 })} 
+            </div> 
+        );
     }
 }
  
