@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './search.css';
 import Recipes from './recipes.js';
+import { FaPlus, FaTimes } from 'react-icons/fa';
 
 class Search extends Component {
     //assigns initial state
@@ -12,7 +13,8 @@ class Search extends Component {
             inputValue: "",
             ingredients: [],
             recipesVisible: false,
-            refreshRecipes: false
+            refreshRecipes: false,
+            searchURL: ""
         };
     }
 
@@ -51,16 +53,37 @@ class Search extends Component {
         });
     }
 
+    getRequestURL() {
+        let requestURL = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=eebaf36af5f24fd3ae3a2bd4095cf3cc&ingredients=";
+        const arrayLength = this.state.ingredients.length;
+
+        //to do: get rid of duplicates
+
+        this.state.ingredients.forEach(ingredient => {
+            if (ingredient.value !== this.state.ingredients[arrayLength-1].value) {    
+                requestURL += ingredient.value + ",";
+            }
+            else {
+                requestURL += ingredient.value;
+            } 
+        });
+
+        requestURL += "&number=50";
+        return requestURL;
+    }
+
     search() {
         //triggers rendering based on click of search button
         if (this.state.recipesVisible) {
             this.setState ({
-                refreshRecipes: !this.state.refreshRecipes
+                refreshRecipes: !this.state.refreshRecipes,
+                searchURL: this.getRequestURL()
             })
         }
         else {
             this.setState ({
-                recipesVisible: true
+                recipesVisible: true,
+                searchURL: this.getRequestURL()
             });
         }
     }
@@ -71,26 +94,32 @@ class Search extends Component {
     render() { 
         return ( 
             <div>
-                <input className="input-field"
-                    type="text"
-                    placeholder="Add an ingredient"
-                    //curly brackets required to dynamically set attribute
-                    value = {this.state.inputValue}
-                    onChange = {event => this.updateInput("inputValue", event.target.value)}
-                />
-                <button id="add-button" onClick={()=> this.addIngredient()}>+</button>
+                <header>
+                    <h1>Cook IT</h1>
+                    <div className="input container">
+                        <input className="input-field"
+                        type="text"
+                        placeholder="Add an ingredient"
+                        //curly brackets required to dynamically set attribute
+                        value = {this.state.inputValue}
+                        onChange = {event => this.updateInput("inputValue", event.target.value)}
+                        />
+                        <button id="add-button" onClick={()=> this.addIngredient()}>{<FaPlus/>}</button>
+                    </div>
+                </header>
                 <ul className="ingredient list">
                     {this.state.ingredients.map(ingredient => {
                         return (
                         <li key={ingredient.id}>{ingredient.value}
-                            <button id="delete-button" onClick={() => this.deleteIngredient(ingredient.id)}>x</button>
+                            <button id="delete-button" onClick={() => this.deleteIngredient(ingredient.id)}>{<FaTimes/>}</button>
                         </li>
                         );
                     })}
-                </ul>
                 <button id="search-button" onClick={() => this.search()}>Find recipes</button>
-                <div className="recipes">{this.state.recipesVisible ? <Recipes data = {this.state.ingredients} 
-                refresh = {this.state.refreshRecipes}/> : null}</div>
+                </ul>
+                <section id="recipes">{this.state.recipesVisible ? <Recipes url = {this.state.searchURL} 
+                refresh = {this.state.refreshRecipes}/> : null}
+                </section>
             </div>
         );
     }

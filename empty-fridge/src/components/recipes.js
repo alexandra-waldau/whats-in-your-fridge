@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './recipes.css';
-import { Link } from 'react-router-dom';
+import  RecipeItem from './recipe-list';
+import Recipe from './recipe';
 
 class Recipes extends Component {
     constructor(props) {
@@ -8,65 +9,60 @@ class Recipes extends Component {
 
         this.state = {
             recipes: [],
+            showRecipeDetail: false,
+            showRecipeID: '',
+            missedIngredients: []
         };
     }
 
     //lifecycle method
     //invoked after component is inserted into component tree
     componentDidMount() {
-        this.fetchRecipes(this.getRequestURL());
+        this.fetchRecipes(this.props.url);
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.refresh!== prevProps.refresh) {
-            this.fetchRecipes(this.getRequestURL());
+            this.fetchRecipes(this.props.url);
         }
     }
 
-    getRequestURL() {
-        const ingredients = this.props.data;
-        let requestURL = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=eebaf36af5f24fd3ae3a2bd4095cf3cc&ingredients=";
-        const arrayLength = ingredients.length;
-
-        //get rid of duplicates first
-
-        ingredients.forEach(ingredient => {
-            if (ingredient.value !== ingredients[arrayLength-1].value) {    
-                requestURL += ingredient.value + ",";
-            }
-            else {
-                requestURL += ingredient.value;
-            } 
-        });
-
-        requestURL += "&number=50";
-        return requestURL;
+    async fetchRecipes(url) {
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            this.setState ({
+                recipes: data
+            });
+        }
+        catch(error) {
+            console.log(error);
+        }   
     }
 
-    fetchRecipes(url) {
-        fetch(url)
-            .then(result => {
-                return result.json()
-            }).then(data => {
-                this.setState ({
-                    recipes: data
-                })
-            });       
+    showRecipe(id, ingredients) {
+        this.setState ({
+            showRecipeDetail: !this.state.showRecipeDetail,
+            showRecipeID: id,
+            missedIngredients: ingredients
+        })
     }
 
     render() { 
         return ( 
-        <div className="recipes container">{this.state.recipes.map(recipe => {
-            return (
-            <div className="recipe" key={recipe.id}>
-                <Link to={{ pathname: "/recipe/" + recipe.id, state: recipe.missedIngredients}}>View recipe</Link>
-                <img src={recipe.image}/>
-                <h2>{recipe.title}</h2>
+        <div id="recipe-view">
+            <div className="recipes-list">{this.state.recipes.map(recipe => {
+                return (<RecipeItem id={recipe.id} title={recipe.title}
+                    image={recipe.image} likes={recipe.likes} 
+                    buttonClick={() => this.showRecipe(recipe.id, recipe.missedIngredients)}/>)
+                })}
             </div>
-            )})
-        }</div>
-    );
-    }
+            <div className="recipe-detail">
+                {this.state.showRecipeDetail ? <Recipe id={this.state.showRecipeID} 
+                missed={this.state.missedIngredients}/> : null}
+            </div>
+        </div>
+    )}
 }
  
 export default Recipes;
