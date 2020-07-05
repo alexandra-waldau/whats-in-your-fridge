@@ -1,30 +1,36 @@
 import React, { Component } from 'react';
-import { FaClock, FaCheck, FaTimes } from 'react-icons/fa';
+import { FaCheck, FaTimes } from 'react-icons/fa';
+import './recipe.css';
 
 class Recipe extends Component {
-    state = {  
-        id: '',
-        missedIngredients: [],
-        information: [],
-        steps: []
+    constructor(props) {
+        super(props);
+
+        this.state = {  
+            missedIngredients: [],
+            allIngredients: [],
+            information: [],
+            steps: []
+        };
     }
 
     componentDidMount() {
-        this.setState ({
-            id: this.props.id,
-            missedIngredients: this.props.missed
-        })
+        this.fetchRecipe(this.props.id.toString());
+        this.getMissedIngredients(this.props.missed);
     }
 
-    async fetchRecipe() {
-        const requestInfoURL = "https://api.spoonacular.com/recipes?apiKey=eebaf36af5f24fd3ae3a2bd4095cf3cc/" + this.state.id + "/information";
-        const requestStepsURL = "https://api.spoonacular.com/recipes?apiKey=eebaf36af5f24fd3ae3a2bd4095cf3cc/" + this.state.id + "/analyzedInstructions"
+    async fetchRecipe(id) {
+        let requestInfoURL = "https://api.spoonacular.com/recipes/".concat(id, "/information?apiKey=eebaf36af5f24fd3ae3a2bd4095cf3cc");
+        let requestStepsURL = "https://api.spoonacular.com/recipes/".concat(id, "/analyzedInstructions?apiKey=eebaf36af5f24fd3ae3a2bd4095cf3cc");
 
         try {
             const [info, steps] = await Promise.all([fetch(requestInfoURL), fetch(requestStepsURL)]);
+            const infoResult = await info.json();
+            const stepsResult = await steps.json();
             this.setState ({
-                information: info,
-                steps: steps
+                information: infoResult,
+                steps: stepsResult,
+                allIngredients: infoResult.extendedIngredients
             });
         }
         catch(error) {
@@ -32,29 +38,46 @@ class Recipe extends Component {
         }   
     }
 
+    getMissedIngredients(ingredients) {
+        let missed = [];
+
+        ingredients.forEach(ingredient => {
+            missed.push(ingredient.name)
+        });
+
+        this.setState ({
+            missedIngredients: missed
+        })
+    }
+
     render() { 
     return ( 
-            <div>
-                {this.state.information.map(item => {
-                    return (
-                        <div className="recipe-information">
-                            <img src={item.image}/>
-                            <h2>{item.title}</h2>
-                            <p>{item.servings} servings</p>
-                            <p><FaClock/>{item.readyInMinutes}</p>
-                            <ul>
-                                {item.extendedIngredients.map(ingredient => {
-                                <MarkedIngredient id ={ingredient.id} name={ingredient.original}/>
-                            })}
-                            </ul>    
-                        </div>
-                    );
-                })}
-                {this.state.steps.step.map(step => {
+            <div className="recipe">
+                    <div className="img-cropper">
+                        <img src={this.state.information.image}/>
+                    </div>
+                    <div className="recipe-information">
+                    <h2>{this.state.information.title}</h2>
+                    <ul>
+                        <li key="servings">{this.state.information.servings} servings</li>
+                        <li key="time">{this.state.information.readyInMinutes} minutes</li>
+                    </ul>
+                    <h2>Ingredients:</h2>  
+                    <ul>{this.state.allIngredients.map(ingredient => {
+                        return (
+                            <MarkedIngredient id={ingredient.id} name={ingredient.name} 
+                            original={ingredient.original} missed={this.state.missedIngredients}/>
+                        );
+                        })}
+                    </ul>  
+                </div>
+                <h2 id="prep">Preparation:</h2>
+                {this.state.steps.map(step => {
                     return (
                         <div className="recipe-steps">
-                            <ol>
-                                <li key={step.number}>{step.step}</li>
+                            <ol>{step.steps.map(each => {
+                                return (<li key={1+Math.random()}>{each.step}</li>);
+                                })}
                             </ol>
                         </div>
                     );
@@ -65,7 +88,10 @@ class Recipe extends Component {
 }
 
 function MarkedIngredient(props) {
-    return (<li key={props.id}>{this.state.missedIngredients.includes(props.name) ? <FaCheck/> : <FaTimes/>}</li>);
+    return (
+    <li className="ingredient" key={props.id}>{props.missed.includes(props.name) ? 
+    <div><FaTimes className="cross"/>{props.original}</div> : <div><FaCheck className="check"/>{props.original}</div>}</li>
+    );
 }
 
 export { MarkedIngredient };

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { FaHeart } from 'react-icons/fa';
 import './recipe-list.css';
 
@@ -12,7 +12,7 @@ function RecipeItem(props) {
     const missedIngredients = props.missed;
 
     return (
-    <div className="recipe" key={recipeId}>
+    <div className="recipe item" key={recipeId}>
         <div className="image-cropper">
             <img src={image}/>
         </div>

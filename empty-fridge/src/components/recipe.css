@@ -1,0 +1,52 @@
+.recipe-information ul {
+    list-style-type: none;
+}
+
+.recipe-information ul li{
+    padding-bottom: 10px;
+}
+
+.recipe-information {
+    margin-bottom: 30px;
+    padding-left: 20px;
+}
+
+.recipe-information h2 {
+    padding: 20px 0 10px 0;
+}
+
+.img-cropper{
+    width: 100%;
+    height: 100px;
+    overflow: hidden;
+    border-bottom: 5px solid #2c9096;
+}
+
+.img-cropper img{
+    object-fit: cover;
+    width: 100%;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.check {
+    color: #2c9096;
+}
+
+.check, .cross {
+    padding-right: 5px;
+    vertical-align: middle;
+}
+
+#prep {
+    padding-left: 20px;
+}
+
+.recipe-steps {
+    padding: 10px 10px 20px 40px;
+}
+
+.recipe-steps ol li{
+    padding-bottom: 10px;
+    line-height: 20px;
+}

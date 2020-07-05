@@ -5,12 +5,14 @@ h2 {
 }
 
 .recipe {
+    border-radius: 10px;
+    box-shadow: 0 0 3px 3px rgba(240,240,240, 0.6);
+}
+
+.recipe.item {
     display: flex;
     height: 170px;
-    border-radius: 10px;
-    box-shadow: 3px 3px rgba(240,240,240, 0.6);
     margin-top: 10px;
-    margin-left: 20px;
     position: relative;
     flex-shrink: 0;
 }
@@ -66,5 +68,6 @@ p {
     flex-direction: column;
     box-shadow: none;
     margin-top: 16px;
+    margin-left: 20px;
     width: 60%;
 }

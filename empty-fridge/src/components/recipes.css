@@ -2,12 +2,16 @@
     display: flex;
     flex-direction: row;
     margin-top: 30px;
+    height: 100vh;
 }
 
 .recipes-list {
     width: 50%;
+    overflow-y: scroll;
+    margin-left: 30px;
 }
 
 .recipe-detail {
-    margin-left: 20px;
+    width: 45%;
+    margin-left: 25px;
 }
