@@ -2,7 +2,7 @@ import React from 'react';
 import { FaHeart } from 'react-icons/fa';
 import './recipe-list.css';
 
-//list component
+//recipe list component
 function RecipeItem(props) {
     const image = props.image;
     const recipeTitle = props.title;
