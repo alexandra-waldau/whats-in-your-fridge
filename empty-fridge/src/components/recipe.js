@@ -26,6 +26,7 @@ class Recipe extends Component {
         }
     }
 
+    //fetch recipe information and instructions
     async fetchRecipe(id) {
         let requestInfoURL = "https://api.spoonacular.com/recipes/".concat(id, "/information?apiKey=eebaf36af5f24fd3ae3a2bd4095cf3cc");
         let requestStepsURL = "https://api.spoonacular.com/recipes/".concat(id, "/analyzedInstructions?apiKey=eebaf36af5f24fd3ae3a2bd4095cf3cc");
@@ -45,6 +46,7 @@ class Recipe extends Component {
         }   
     }
 
+    //store ingredient names for later comparison
     getMissedIngredients(ingredients) {
         let missed = [];
 
@@ -55,15 +57,14 @@ class Recipe extends Component {
         this.setState ({
             missedIngredients: missed
         })
-
-        console.log(missed);
     }
 
+    //render recipe information and, if available, instructions
     render() { 
     return ( 
             <div className="recipe detail">
                     <div className="img-cropper">
-                        <img src={this.state.information.image}/>
+                        <img src={this.state.information.image} alt="jpg"/>
                     </div>
                     <div className="recipe-information">
                     <h2>{this.state.information.title}</h2>
@@ -96,8 +97,8 @@ class Recipe extends Component {
     }
 }
 
+//compare missed ingredients with complete ingredient list
 function MarkedIngredient(props) {
-
     return (
     <li className="ingredient" key={props.id}>{props.missed.includes(props.name) ? 
     <div><FaTimes className="cross"/>{props.original}</div> : <div><FaCheck className="check"/>{props.original}</div>}</li>

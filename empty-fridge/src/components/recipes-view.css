@@ -18,5 +18,23 @@
     flex-direction: column;
     width: 45%;
     margin-left: 25px;
-    margin-right: 25px;
+    margin-right: 10px;
+}
+
+#wrapper {
+    position: relative;
+    padding-top: 10px;
+}
+
+#counter {
+    display: block;
+    position: absolute;
+    right: 10px;
+    top: 0;
+}
+
+#no-results {
+    position: absolute;
+    top: 25%;
+    left: 40%;
 }

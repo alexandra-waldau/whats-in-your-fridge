@@ -71,19 +71,18 @@ class Search extends Component {
         noDuplicates.forEach(ingredient => {
             //check if ingredient is not the last one in the array
             if (ingredient!== noDuplicates[arrayLength-1]) {    
-                requestURL += ingredient + ",";
+                requestURL += ingredient + ",+";
             }
             else {
                 requestURL += ingredient;
             } 
         });
         requestURL += "&number=50";
-        console.log(requestURL);
         return requestURL;
     }
 
     search() {
-        //triggers rendering of recipes section based on click of search button
+        //trigger rendering of recipes section based on click of search button
         if (this.state.recipesVisible) {
             this.setState ({
                 refreshRecipes: !this.state.refreshRecipes,
@@ -99,6 +98,8 @@ class Search extends Component {
         }
     }
 
+    //read from input field
+    //continuously render ingredient list
     render() { 
         return ( 
             <div>

@@ -2,17 +2,16 @@ import React from 'react';
 import { FaHeart } from 'react-icons/fa';
 import './recipe-list.css';
 
-//function component
+//list component
 function RecipeItem(props) {
-    const recipeId = props.id;
     const image = props.image;
     const recipeTitle = props.title;
     const likes = props.likes;
 
     return (
-    <div className="recipe item" key={recipeId}>
+    <div className="recipe item">
         <div className="image-cropper">
-            <img src={image}/>
+            <img src={image} alt="jpg"/>
         </div>
         <div className="recipe description"> 
             <h2>{recipeTitle}</h2>
