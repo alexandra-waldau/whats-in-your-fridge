@@ -123,7 +123,7 @@ class Search extends Component {
                                     </li>
                             );
                         })}
-                    <button id="search-button" onClick={() => this.search()}>Find recipes</button>
+                    <button disabled={this.state.ingredients.length === 0} id="search-button" onClick={() => this.search()}>Find recipes</button>
                     </ul>
                 </section>
                 <section id="recipes">{this.state.recipesVisible && <Recipes url = {this.state.searchURL} 

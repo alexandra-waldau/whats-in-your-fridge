@@ -75,7 +75,7 @@ class Recipe extends Component {
                     <h2>Ingredients:</h2>  
                     <ul>{this.state.allIngredients.map(ingredient => {
                         return (
-                            <MarkedIngredient id={ingredient.id} name={ingredient.name} 
+                            <MarkedIngredient key={ingredient.id} name={ingredient.name} 
                             original={ingredient.original} missed={this.state.missedIngredients}/>
                         );
                         })}
@@ -100,7 +100,7 @@ class Recipe extends Component {
 //compare missed ingredients with complete ingredient list
 function MarkedIngredient(props) {
     return (
-    <li className="ingredient" key={props.id}>{props.missed.includes(props.name) ? 
+    <li className="ingredient">{props.missed.includes(props.name) ? 
     <div><FaTimes className="cross"/>{props.original}</div> : <div><FaCheck className="check"/>{props.original}</div>}</li>
     );
 }

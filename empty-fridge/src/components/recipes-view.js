@@ -38,6 +38,13 @@ class Recipes extends Component {
                 recipes: data,
                 counter: data.length
             });
+
+            //reset showRecipeID to false to hide recipe detail component 
+            if(data.length === 0) {
+                this.setState ({
+                    showRecipeID: ""
+                })
+            }
         }
         catch(error) {
             console.log(error);
@@ -50,13 +57,6 @@ class Recipes extends Component {
             showRecipeDetail: !this.state.showRecipeDetail,
             showRecipeID: id,
             missedIngredients: ingredients
-        })
-    }
-
-    //set showRecipeID to false to hide recipe detail component 
-    errorMessage() {
-        this.setState({
-            showRecipeID: null
         })
     }
 
@@ -74,7 +74,7 @@ class Recipes extends Component {
                     image={recipe.image} likes={recipe.likes} 
                     buttonClick={() => this.showRecipe(recipe.id, recipe.missedIngredients)}/>)
                 })}
-            </div> : <div id="no-results">{() => this.errorMessage()}Sorry, no results have been found.</div>}
+            </div> : <div id="no-results">Sorry, no results have been found.</div>}
             <div className="recipe-detail">
                 {this.state.showRecipeID && <Recipe id={this.state.showRecipeID} 
                 missed={this.state.missedIngredients} refresh={this.state.showRecipeDetail}/>}

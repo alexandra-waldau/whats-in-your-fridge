@@ -100,3 +100,8 @@ h1 {
     color: #2c9096;
     border: 1px solid #2c9096;
 }
+
+#search-button:disabled {
+    background-color:#E8E8E8;
+    pointer-events: none;
+}
