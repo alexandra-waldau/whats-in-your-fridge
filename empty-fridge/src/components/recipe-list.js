@@ -2,14 +2,12 @@ import React from 'react';
 import { FaHeart } from 'react-icons/fa';
 import './recipe-list.css';
 
-
 //function component
 function RecipeItem(props) {
     const recipeId = props.id;
     const image = props.image;
     const recipeTitle = props.title;
     const likes = props.likes;
-    const missedIngredients = props.missed;
 
     return (
     <div className="recipe item" key={recipeId}>

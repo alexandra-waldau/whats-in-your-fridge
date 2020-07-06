@@ -34,7 +34,7 @@ h1 {
     padding-left: 15px;
 }
 
-.input-field:focus, #add-button, #search-button {
+.input-field:focus, #add-button, #search-button, #delete-button {
     outline: none;
 }
 
@@ -67,21 +67,26 @@ h1 {
 .list li, #search-button {
     border-radius: 25px;
     background-color: #2c9096;
-    height: 35px;
     padding-left: 20px;
+    height: 35px;
     color: white;
     margin-right: 10px;
     margin-top: 10px;
     font-size: 14px;
+    /*center text*/
+    display: flex;
+    align-items: center;
 }
 
 #delete-button {
     margin-right: 10px;
-    padding-left: 15px;
+    padding-left: 10px;
     padding-right: 5px;
     background-color: transparent;
     border-style: none;
     color: white;
+    align-self: flex-end;
+    line-height: 30px;
 }
 
 #search-button {

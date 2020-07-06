@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './recipes.css';
+import './recipes-view.css';
 import  RecipeItem from './recipe-list';
 import Recipe from './recipe';
 
@@ -15,8 +15,7 @@ class Recipes extends Component {
         };
     }
 
-    //lifecycle method
-    //invoked after component is inserted into component tree
+    //lifecycle method, invoked after component is inserted into component tree
     componentDidMount() {
         this.fetchRecipes(this.props.url);
     }
@@ -58,8 +57,8 @@ class Recipes extends Component {
                 })}
             </div>
             <div className="recipe-detail">
-                {this.state.showRecipeDetail ? <Recipe id={this.state.showRecipeID} 
-                missed={this.state.missedIngredients}/> : null}
+                {this.state.showRecipeID && <Recipe id={this.state.showRecipeID} 
+                missed={this.state.missedIngredients} refresh={this.state.showRecipeDetail}/>}
             </div>
         </div>
     )}

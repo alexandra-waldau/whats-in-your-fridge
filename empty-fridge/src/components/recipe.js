@@ -19,6 +19,13 @@ class Recipe extends Component {
         this.getMissedIngredients(this.props.missed);
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.refresh!== prevProps.refresh) {
+            this.fetchRecipe(this.props.id);
+            this.getMissedIngredients(this.props.missed);
+        }
+    }
+
     async fetchRecipe(id) {
         let requestInfoURL = "https://api.spoonacular.com/recipes/".concat(id, "/information?apiKey=eebaf36af5f24fd3ae3a2bd4095cf3cc");
         let requestStepsURL = "https://api.spoonacular.com/recipes/".concat(id, "/analyzedInstructions?apiKey=eebaf36af5f24fd3ae3a2bd4095cf3cc");
@@ -48,11 +55,13 @@ class Recipe extends Component {
         this.setState ({
             missedIngredients: missed
         })
+
+        console.log(missed);
     }
 
     render() { 
     return ( 
-            <div className="recipe">
+            <div className="recipe detail">
                     <div className="img-cropper">
                         <img src={this.state.information.image}/>
                     </div>
@@ -71,7 +80,7 @@ class Recipe extends Component {
                         })}
                     </ul>  
                 </div>
-                <h2 id="prep">Preparation:</h2>
+                <h2 id="prep">{this.state.steps.length ? "Preparation:" : null}</h2>
                 {this.state.steps.map(step => {
                     return (
                         <div className="recipe-steps">
@@ -88,6 +97,7 @@ class Recipe extends Component {
 }
 
 function MarkedIngredient(props) {
+
     return (
     <li className="ingredient" key={props.id}>{props.missed.includes(props.name) ? 
     <div><FaTimes className="cross"/>{props.original}</div> : <div><FaCheck className="check"/>{props.original}</div>}</li>
