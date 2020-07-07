@@ -72,7 +72,7 @@ class Recipes extends Component {
             <div className="recipes-list">{this.state.recipes.map(recipe => {
                 return (<RecipeItem key={recipe.id} title={recipe.title}
                     image={recipe.image} likes={recipe.likes} 
-                    buttonClick={() => this.showRecipe(recipe.id)}/>)
+                    buttonClick={() => this.showRecipe(recipe.id, recipe.missedIngredients)}/>)
                 })}
             </div> : <div id="no-results">Sorry, no results have been found.</div>}
             <div className="recipe-detail">
