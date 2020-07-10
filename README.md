@@ -7,15 +7,14 @@ The finished product is a 'what's-in-your-fridge' application. It allows the use
 
 ## Features 
 
-*Recipe search via ingredients
-*View recipe details including preparation time and steps
-*View missing ingredients 
+* Recipe search via ingredients
+* View recipe details including preparation time and steps
+* View missing ingredients 
 
 ## Possible Extensions
 
-*Shopping list export
-*Random recipe generator
-
+* Shopping list export
+* Random recipe generator
 
 ## Link to application
 
